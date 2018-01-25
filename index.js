@@ -1,9 +1,28 @@
 const jsxapi = require('jsxapi');
 const log = require('simple-node-logger').createSimpleLogger();
+const request = require('request');
 
 const config = require('./config');
 
 log.setLevel = process.env.LOG_LEVEL || 'info';
+
+function setLight(entity_id, brightness) {
+  const state = brightness > 0 ? 'turn_on' : 'turn_off';
+  const payload = brightness > 0
+    ? { entity_id, brightness }
+    : { entity_id };
+
+  request({
+    url: `${config.hass_url}/api/services/light/${state}`,
+    method: 'POST',
+    json: true,
+    body: payload
+  }, (err, res) => {
+    if (err) {
+      log.error(err);
+    }
+  });
+}
 
 function setup () {
   log.info(`connecting to ${config.url}`);
@@ -30,10 +49,15 @@ function setup () {
     })
 
   xapi.event.on('UserInterface Extensions Widget Action', (data) => {
-    if (!data.WidgetId.startsWith('hass:') || data.Type !== 'released') {
+    const prefix = 'light:';
+    if (!data.WidgetId.startsWith(prefix) || data.Type !== 'released') {
         return;
     }
-    log.info(JSON.stringify(data, null, 2));
+
+    const entity = data.WidgetId.replace(new RegExp(`^${prefix}`), 'light.');
+    const brightness = data.Value;
+
+    setLight(entity, brightness);    
   });
 }
 

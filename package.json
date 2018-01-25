@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "jsxapi": "^4.0.1",
+    "request": "^2.83.0",
     "simple-node-logger": "^0.93.33"
   },
   "devDependencies": {
