@@ -2,7 +2,7 @@
   "url": "ssh://127.0.0.1",
   "options": {
     "username": "username",
-    "password": "password",
+    "password": "password"
   },
   "reconnect": "5",
   "hass_url": "http://127.0.0.1:8123"
