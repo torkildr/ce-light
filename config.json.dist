@@ -1,0 +1,7 @@
+{
+  "url": "ssh://127.0.0.1",
+  "options": {
+    "username": "username",
+    "password": "password",
+  }
+}
