@@ -4,7 +4,8 @@ const request = require('request');
 
 const config = require('./config');
 
-log.setLevel = process.env.LOG_LEVEL || 'info';
+log.setLevel(process.env.LOG_LEVEL || 'info');
+log.info(`log level: ${log.getLevel()}`);
 
 function setLight(entity_id, brightness) {
   const state = brightness > 0 ? 'turn_on' : 'turn_off';
@@ -20,6 +21,8 @@ function setLight(entity_id, brightness) {
   }, (err, res) => {
     if (err) {
       log.error(err);
+    } else {
+      log.debug(`service/light called '${state}, ${JSON.stringify(payload)}'`);
     }
   });
 }
